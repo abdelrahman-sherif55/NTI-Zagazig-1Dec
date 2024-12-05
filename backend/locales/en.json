@@ -24,16 +24,5 @@
   "check_user": "The user does not exist anymore...",
   "check_password_changed": "Your password has been updated since you logged in last time. Please log in again.",
   "check_active": "Your account is deactivated",
-  "allowed_to": "Privilege denied! You cannot perform this action",
-  "-----------------------------------------------------------": "Instructor Requests",
-  "become_instructor_request": "Your request is under review... be patient",
-  "become_instructor_limit": "You can submit only 3 requests",
-  "-----------------------------------------------------------------------": "Courses",
-  "validation_free": "you can't add price to free course",
-  "delete_course": "you can't delete published course",
-  "lesson_privacy": "every course has 4 free lessons only",
-  "------------------------------------------------------------": "Courses Categories",
-  "delete_category": "this category has courses... you can't delete it",
-  "------------------------------------------------------------------------": "Navbar",
-  "validation_navbar": "you already have logo"
+  "allowed_to": "Privilege denied! You cannot perform this action"
 }
