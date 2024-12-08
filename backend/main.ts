@@ -1,5 +1,6 @@
 import express from 'express';
-import { Server } from "http";
+import {Server} from "http";
+import hpp from "hpp";
 import path from 'path';
 import dotenv from 'dotenv';
 import i18n from 'i18n';
@@ -7,9 +8,10 @@ import dbConnection from "./src/config/database";
 import mountRoutes from "./src";
 
 const app: express.Application = express();
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({limit: '10kb'}));
 let server: Server;
 dotenv.config();
+app.use(hpp({whitelist: ['price']}));
 i18n.configure({
     locales: ['en', 'ar'],
     directory: path.join(__dirname, 'locales'),
