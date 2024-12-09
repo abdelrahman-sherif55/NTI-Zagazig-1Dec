@@ -1,8 +1,11 @@
 import {Router} from 'express';
 import usersService from "./users.service";
 import usersValidation from "./users.validation";
+import authService from "../auth/auth.service";
 
 const usersRouter: Router = Router();
+
+usersRouter.use(authService.protectedRoutes, authService.checkActive, authService.allowedTo('admin'));
 
 usersRouter.route('/')
     .get(usersService.getAll)
