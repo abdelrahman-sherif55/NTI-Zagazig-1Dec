@@ -11,6 +11,7 @@ const app: express.Application = express();
 app.use(express.json({limit: '10kb'}));
 let server: Server;
 dotenv.config();
+app.use(express.static('uploads'));
 app.use(hpp({whitelist: ['price']}));
 i18n.configure({
     locales: ['en', 'ar'],
