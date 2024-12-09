@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from 'bcryptjs';
 import {Users} from "./users.interface";
 
 const usersSchema = new mongoose.Schema<Users>({
@@ -24,5 +25,11 @@ const imagesUrl = (document: Users) => {
 usersSchema
     .post('init', imagesUrl)
     .post('save', imagesUrl);
+
+usersSchema.pre<Users>('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    this.password = await bcrypt.hash(this.password, 13);
+    next();
+});
 
 export default mongoose.model<Users>('users', usersSchema);

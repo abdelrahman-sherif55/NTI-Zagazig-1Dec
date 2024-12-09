@@ -6,11 +6,12 @@ import refactorService from "../refactor.service";
 import ApiErrors from "../utils/apiErrors";
 import {uploadSingleFile} from "../middlewares/uploadFiles.middleware";
 import sharp from "sharp";
+import bcrypt from "bcryptjs";
 
 class UsersService {
-    getAll = refactorService.getAll<Users>(usersSchema);
+    getAll = refactorService.getAll<Users>(usersSchema, 'users');
     createOne = refactorService.createOne<Users>(usersSchema);
-    getOne = refactorService.getOne<Users>(usersSchema);
+    getOne = refactorService.getOne<Users>(usersSchema, 'users');
     updateOne = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
         const user: Users | null = await usersSchema.findByIdAndUpdate(req.params.id, {
             name: req.body.name,
@@ -24,7 +25,7 @@ class UsersService {
 
     changePassword = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
         const user: Users | null = await usersSchema.findByIdAndUpdate(req.params.id, {
-            password: req.body.password,
+            password: await bcrypt.hash(req.body.password, 13),
             passwordChangedAt: Date.now(),
         }, {new: true});
         if (!user) return next(new ApiErrors(`${req.__('not_found')}`, 404));
