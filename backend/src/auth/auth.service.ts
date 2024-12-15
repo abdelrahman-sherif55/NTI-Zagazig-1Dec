@@ -89,7 +89,7 @@ class AuthService {
             token = req.headers.authorization.split(' ')[1];
         else return next(new ApiErrors(`${req.__('check_verify_code')}`, 403));
 
-        const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+        const decoded: any = jwt.verify(token, process.env.JWT_SECRET_RESET!);
         const hashedResetCode: string = crypto.createHash('sha256').update(req.body.resetCode).digest('hex');
         const user: any = await usersSchema.findOne({
             _id: decoded._id,
@@ -110,7 +110,7 @@ class AuthService {
             token = req.headers.authorization.split(' ')[1];
         else return next(new ApiErrors(`${req.__('check_reset_code')}`, 403));
 
-        const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+        const decoded: any = jwt.verify(token, process.env.JWT_SECRET_RESET!);
         const user: any = await usersSchema.findOne({
             _id: decoded._id,
             passwordResetCodeVerify: true,

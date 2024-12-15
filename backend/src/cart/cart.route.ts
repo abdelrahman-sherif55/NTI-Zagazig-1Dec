@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import categoriesService from "./categories.service";
+import categoriesService from "./cart.service";
 import subcategoriesRoute from "../subcategories/subcategories.route";
-import categoriesValidation from "./categories.validation";
+import categoriesValidation from "./cart.validation";
 import authService from "../auth/auth.service";
 
 const categoriesRouter: Router = Router();
