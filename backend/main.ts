@@ -4,11 +4,21 @@ import hpp from "hpp";
 import path from 'path';
 import dotenv from 'dotenv';
 import i18n from 'i18n';
+import cors from 'cors';
+import cookieParser from "cookie-parser";
 import dbConnection from "./src/config/database";
 import mountRoutes from "./src";
 
 const app: express.Application = express();
+app.use(cors({
+    origin: ['http://localhost:4200'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+}));
+app.use(cookieParser());
 app.use(express.json({limit: '10kb'}));
+
 let server: Server;
 dotenv.config();
 app.use(express.static('uploads'));

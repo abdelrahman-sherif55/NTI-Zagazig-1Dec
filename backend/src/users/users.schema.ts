@@ -11,6 +11,13 @@ const usersSchema = new mongoose.Schema<Users>({
     role: {type: String, enum: ['admin', 'employee', 'user'], default: 'user'},
     googleId: String,
     hasPassword: {type: Boolean, default: true},
+    wishlist: [{type: mongoose.Schema.Types.ObjectId, ref: 'products'}],
+    address: [{
+        address: String,
+        city: String,
+        state: String,
+        zip: String,
+    }],
     image: {type: String, default: 'user-default.jpg'},
     passwordChangedAt: Date,
     passwordResetCode: String,
