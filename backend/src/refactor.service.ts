@@ -22,16 +22,18 @@ class RefactorService {
             const document: modelType = await model.create(req.body);
             res.status(201).json({data: document});
         });
-    getOne = <modelType>(model: mongoose.Model<any>, modelName?: string) =>
+    getOne = <modelType>(model: mongoose.Model<any>, modelName?: string, populationOptions?: string) =>
         asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-            let document: any = await model.findById(req.params.id);
+            let query: any = model.findById(req.params.id);
+            if (populationOptions) query = query.populate(populationOptions);
+            let document: any = await query;
             if (!document) return next(new ApiErrors(`${req.__('not_found')}`, 404));
             if (modelName === 'users') document = sanitization.User(document)
             res.status(200).json({data: document});
         });
     updateOne = <modelType>(model: mongoose.Model<any>) =>
         asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-            const document: modelType | null = await model.findByIdAndUpdate(req.params.id, req.body, {new: true});
+            const document: any = await model.findOneAndUpdate({_id: req.params.id}, req.body, {new: true});
             if (!document) return next(new ApiErrors(`${req.__('not_found')}`, 404));
             res.status(200).json({data: document});
         });
