@@ -12,6 +12,8 @@ import wishlistRoute from "./wishlist/wishlist.route";
 import addressRoute from "./address/wishlist.route";
 import reviewsRoute from "./reviews/reviews.route";
 import couponsRoute from "./coupons/coupons.route";
+import cartRoute from "./cart/cart.route";
+import csurf from "csurf";
 
 declare module "express" {
     interface Request {
@@ -23,6 +25,19 @@ declare module "express" {
 
 const mountRoutes = (app: express.Application) => {
     app.use('/auth/google', googleRoute);
+    app.use(
+        csurf({
+            cookie: {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+            },
+        }),
+    );
+    app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+        res.cookie('cookies', req.csrfToken());
+        next();
+    });
     app.use('/api/v1/categories', categoriesRouter);
     app.use('/api/v1/subcategories', subcategoriesRoute);
     app.use('/api/v1/products', productsRoute);
@@ -33,6 +48,7 @@ const mountRoutes = (app: express.Application) => {
     app.use('/api/v1/address', addressRoute);
     app.use('/api/v1/reviews', reviewsRoute);
     app.use('/api/v1/coupons', couponsRoute);
+    app.use('/api/v1/cart', cartRoute);
     app.all('*', (req: express.Request, res: express.Response, next: express.NextFunction) => {
         next(new ApiErrors(`route ${req.originalUrl} not found`, 400));
     });

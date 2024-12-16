@@ -5,6 +5,9 @@ import path from 'path';
 import dotenv from 'dotenv';
 import i18n from 'i18n';
 import cors from 'cors';
+import compression from 'compression';
+import helmet from 'helmet';
+import expressMongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import dbConnection from "./src/config/database";
 import mountRoutes from "./src";
@@ -12,12 +15,15 @@ import mountRoutes from "./src";
 const app: express.Application = express();
 app.use(cors({
     origin: ['http://localhost:4200'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['X-CSRF-Token', 'Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
 }));
-app.use(cookieParser());
 app.use(express.json({limit: '10kb'}));
+app.use(expressMongoSanitize());
+app.use(helmet({crossOriginResourcePolicy: {policy: 'same-site'}}));
+app.use(compression());
+app.use(cookieParser());
 
 let server: Server;
 dotenv.config();

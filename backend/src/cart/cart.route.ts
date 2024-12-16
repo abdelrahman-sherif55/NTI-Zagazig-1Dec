@@ -1,20 +1,20 @@
 import {Router} from 'express';
-import categoriesService from "./cart.service";
-import subcategoriesRoute from "../subcategories/subcategories.route";
-import categoriesValidation from "./cart.validation";
+import cartService from "./cart.service";
 import authService from "../auth/auth.service";
 
-const categoriesRouter: Router = Router();
+const cartRouter: Router = Router();
 
-categoriesRouter.use('/:categoryId/subcategories', subcategoriesRoute);
+cartRouter.use(authService.protectedRoutes, authService.checkActive, authService.allowedTo('user'))
 
-categoriesRouter.route('/')
-    .get(categoriesService.getAll)
-    .post(authService.protectedRoutes, authService.checkActive, authService.allowedTo('admin', 'employee'), categoriesValidation.createOne, categoriesService.createOne);
+cartRouter.route('/')
+    .get(cartService.getCart)
+    .post(cartService.addToCart)
+    .delete(cartService.clearCart);
 
-categoriesRouter.route('/:id')
-    .get(categoriesValidation.getOne, categoriesService.getOne)
-    .put(authService.protectedRoutes, authService.checkActive, authService.allowedTo('admin', 'employee'), categoriesValidation.updateOne, categoriesService.updateOne)
-    .delete(authService.protectedRoutes, authService.checkActive, authService.allowedTo('admin', 'employee'), categoriesValidation.deleteOne, categoriesService.deleteOne);
+cartRouter.route('/:itemId')
+    .put(cartService.updateQuantity)
+    .delete(cartService.removeFromCart);
 
-export default categoriesRouter;
+cartRouter.put('/apply-coupon', cartService.applyCoupon);
+
+export default cartRouter;
