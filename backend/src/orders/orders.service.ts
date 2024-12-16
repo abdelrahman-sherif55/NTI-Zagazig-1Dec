@@ -6,6 +6,8 @@ import asyncHandler from "express-async-handler";
 import cartSchema from "../cart/cart.schema";
 import ApiErrors from "../utils/apiErrors";
 import productsSchema from "../products/products.schema";
+import jwt from "jsonwebtoken";
+import usersSchema from "../users/users.schema";
 
 class OrdersService {
     filterOrders(req: Request, res: Response, next: NextFunction) {
@@ -53,6 +55,34 @@ class OrdersService {
         }, {new: true});
         res.status(200).json({success: true});
     });
+    createOnlineOrder = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        let token: string = req.body.obj.payment_key_claims.extra.token;
+        const decoded: any = jwt.decode(token);
+        const user = await usersSchema.findById(decoded._id);
+
+        const cart: any = await cartSchema.findOne({user: user?._id});
+        const itemsPrice: number = cart.totalPriceAfterDiscount ? cart.totalPriceAfterDiscount : cart.totalPrice;
+        const order = await ordersSchema.create({
+            items: cart.items,
+            taxPrice: cart.taxPrice,
+            itemsPrice: itemsPrice,
+            totalPrice: cart.taxPrice + itemsPrice,
+            user: user?._id,
+            address: req.body.obj.payment_key_claims.extra.address,
+            isPaid: true,
+            paidAt: Date.now()
+        });
+        const bulkOptions = cart.items.map((item: any) => ({
+            updateOne: {
+                filter: {_id: item.product._id},
+                update: {$inc: {quantity: -item.quantity, sold: item.quantity}}
+            }
+        }));
+        await productsSchema.bulkWrite(bulkOptions);
+        await cartSchema.deleteOne({user: user?._id});
+        res.status(201).json({data: order});
+    });
+
 }
 
 const ordersService = new OrdersService();

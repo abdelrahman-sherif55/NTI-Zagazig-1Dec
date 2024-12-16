@@ -15,5 +15,6 @@ declare namespace NodeJS {
         readonly GOOGLE_CLIENT_ID: string;
         readonly GOOGLE_CLIENT_SECRET: string;
         readonly GOOGLE_CALLBACK: string;
+        readonly HMAC: string;
     }
 }
