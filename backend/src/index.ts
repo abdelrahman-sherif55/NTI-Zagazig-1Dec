@@ -29,11 +29,8 @@ declare module "express" {
 const mountRoutes = (app: express.Application) => {
     app.post('/paymob-webhook', verifyPaymob, (req: express.Request, res: express.Response, next: express.NextFunction) => {
         if (req.body.obj.success === true) {
-            // console.log(JSON.stringify(req.body.obj))
             // res.redirect(307, `/api/v1/${req.body.obj.payment_key_claims.extra.routeName}`);
-            console.log('success')
             res.redirect(307, `/api/v1/payment`);
-            // ordersService.createOnlineOrder()
         } else {
             return next(new ApiErrors('invalid payment', 403));
         }
