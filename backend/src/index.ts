@@ -1,4 +1,5 @@
 import express from 'express';
+import csurf from "csurf";
 import categoriesRouter from "./categories/categories.route";
 import subcategoriesRoute from "./subcategories/subcategories.route";
 import globalErrors from "./middlewares/errors.middleware";
@@ -13,7 +14,8 @@ import addressRoute from "./address/wishlist.route";
 import reviewsRoute from "./reviews/reviews.route";
 import couponsRoute from "./coupons/coupons.route";
 import cartRoute from "./cart/cart.route";
-import csurf from "csurf";
+import ordersRoute from "./orders/orders.route";
+import verifyPaymob from "./middlewares/verifyPaymob.middleware";
 
 declare module "express" {
     interface Request {
@@ -24,6 +26,14 @@ declare module "express" {
 }
 
 const mountRoutes = (app: express.Application) => {
+    app.post('/paymob-webhook', verifyPaymob, (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        if (req.body.obj.success === true) {
+            console.log(JSON.stringify(req.body.obj))
+            // res.redirect(307, `/api/v1/${req.body.obj.payment_key_claims.extra.routeName}`);
+        } else {
+            return next(new ApiErrors('invalid payment', 403));
+        }
+    });
     app.use('/auth/google', googleRoute);
     app.use(
         csurf({
@@ -49,6 +59,7 @@ const mountRoutes = (app: express.Application) => {
     app.use('/api/v1/reviews', reviewsRoute);
     app.use('/api/v1/coupons', couponsRoute);
     app.use('/api/v1/cart', cartRoute);
+    app.use('/api/v1/orders', ordersRoute);
     app.all('*', (req: express.Request, res: express.Response, next: express.NextFunction) => {
         next(new ApiErrors(`route ${req.originalUrl} not found`, 400));
     });
