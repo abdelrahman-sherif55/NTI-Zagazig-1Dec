@@ -56,9 +56,13 @@ class OrdersService {
         res.status(200).json({success: true});
     });
     createOnlineOrder = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        console.log('inside payment')
         let token: string = req.body.obj.payment_key_claims.extra.token;
+        console.log('get token')
         const decoded: any = jwt.decode(token);
+        console.log(decoded);
         const user = await usersSchema.findById(decoded._id);
+        console.log(user);
 
         const cart: any = await cartSchema.findOne({user: user?._id});
         const itemsPrice: number = cart.totalPriceAfterDiscount ? cart.totalPriceAfterDiscount : cart.totalPrice;
@@ -80,6 +84,7 @@ class OrdersService {
         }));
         await productsSchema.bulkWrite(bulkOptions);
         await cartSchema.deleteOne({user: user?._id});
+        console.log('end')
         res.status(201).json({data: order});
     });
 
