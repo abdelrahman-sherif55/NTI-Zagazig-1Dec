@@ -1,8 +1,21 @@
 import {Routes} from '@angular/router';
+import {authGuard} from './guards/auth.guard';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', title: 'Home', loadComponent: () => import('./home/home.component').then(c => c.HomeComponent)},
+  {
+    path: 'wishlist',
+    title: 'Wishlist',
+    canActivate: [authGuard],
+    loadComponent: () => import('./wishlist/wishlist.component').then(c => c.WishlistComponent)
+  },
+  {
+    path: 'cart',
+    title: 'Cart',
+    canActivate: [authGuard],
+    loadComponent: () => import('./cart/cart.component').then(c => c.CartComponent)
+  },
   {
     path: 'products',
     children: [

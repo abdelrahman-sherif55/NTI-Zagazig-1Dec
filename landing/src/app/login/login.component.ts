@@ -23,6 +23,7 @@ export class LoginComponent {
     this._authService.login(formData.value).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
+        this._authService.saveLogin();
         this._router.navigate(['/home'])
       },
       error: err => {
