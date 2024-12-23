@@ -27,7 +27,7 @@
 
           <div class="buttons d-flex my-5">
             <div class="block">
-              <button class="shadow btn btn btn-primary ">Add to Wishlist</button>
+              <button (click)="addToWishlist(product._id)" class="shadow btn btn btn-primary ">Add to Wishlist</button>
             </div>
             <div class="block">
               <button class="shadow btn btn btn-success">Add to cart</button>
@@ -64,26 +64,36 @@
         </div>
         <hr class="m-5">
         <div name="reviews">
-          <form>
+          <form [formGroup]="reviewsForm" (ngSubmit)="addReview(product._id, reviewsForm)">
             <div class="form-floating">
-            <textarea class="form-control" placeholder="Leave a comment here"
+            <textarea formControlName="comment" class="form-control" placeholder="Leave a comment here"
                       id="floatingTextarea"></textarea>
               <label for="floatingTextarea">Review</label>
+              @if (reviewsForm.get('comment')?.errors !== null && reviewsForm.get('comment')?.touched) {
+                @if (reviewsForm.get('comment')?.errors?.['required']) {
+                  <p class="text-danger mt-2">Comment required</p>
+                }
+              }
             </div>
             <div class="mt-3 text-danger">
             </div>
             <div class="rating">
-              <input type="radio" id="star5" name="rate" value="5"/>
+              <input formControlName="rate" type="radio" id="star5" name="rate" value="5"/>
               <label class="star" for="star5" title="Awesome" aria-hidden="true"></label>
-              <input type="radio" id="star4" name="rate" value="4"/>
+              <input formControlName="rate" type="radio" id="star4" name="rate" value="4"/>
               <label class="star" for="star4" title="Great" aria-hidden="true"></label>
-              <input type="radio" id="star3" name="rate" value="3"/>
+              <input formControlName="rate" type="radio" id="star3" name="rate" value="3"/>
               <label class="star" for="star3" title="Very good" aria-hidden="true"></label>
-              <input type="radio" id="star2" name="rate" value="2"/>
+              <input formControlName="rate" type="radio" id="star2" name="rate" value="2"/>
               <label class="star" for="star2" title="Good" aria-hidden="true"></label>
-              <input type="radio" id="star1" name="rate" value="1"/>
+              <input formControlName="rate" type="radio" id="star1" name="rate" value="1"/>
               <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
-              <button class="btn btn-success shadow mt-2 mx-3">Add Review</button>
+              <button [disabled]="reviewsForm.invalid" class="btn btn-success shadow mt-2 mx-3">Add Review</button>
+              @if (reviewsForm.get('rate')?.errors !== null && reviewsForm.get('rate')?.touched) {
+                @if (reviewsForm.get('rate')?.errors?.['required']) {
+                  <p class="text-danger mt-2">Rate required</p>
+                }
+              }
             </div>
           </form>
         </div>
@@ -97,6 +107,10 @@
             <h4>{{ review.user.name }}</h4>
             <p>{{ review.comment }} - {{ review.rate }}&star;</p>
             <p>{{ review.createdAt|date }}</p>
+            @if (loggedUser !== null && review.user._id === loggedUser._id) {
+              <button class="btn btn-primary shadow mt-2 mx-3">Update Review</button>
+              <button (click)="deleteReview(review._id)" class="btn btn-danger shadow mt-2 mx-3">Delete Review</button>
+            }
             <hr class="my-4">
           </div>
         } @empty {
