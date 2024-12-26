@@ -17,6 +17,29 @@ export const routes: Routes = [
     loadComponent: () => import('./cart/cart.component').then(c => c.CartComponent)
   },
   {
+    path: 'orders',
+    title: 'My Orders',
+    canActivate: [authGuard],
+    loadComponent: () => import('./orders/orders.component').then(c => c.OrdersComponent)
+  },
+  {
+    path: 'reviews',
+    title: 'My Reviews',
+    canActivate: [authGuard],
+    loadComponent: () => import('./reviews/reviews.component').then(c => c.ReviewsComponent)
+  },
+  {
+    path: 'profile',
+    title: 'Profile',
+    canActivate: [authGuard],
+    loadComponent: () => import('./profile/profile.component').then(c => c.ProfileComponent)
+  },
+  {
+    path: 'auth/google',
+    title: 'google login',
+    loadComponent: () => import('./google/google.component').then(c => c.GoogleComponent)
+  },
+  {
     path: 'products',
     children: [
       {

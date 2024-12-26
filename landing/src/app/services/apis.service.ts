@@ -15,4 +15,6 @@ export class ApisService {
   readonly reviewsRoute: string = '/api/v1/reviews';
   readonly cartRoute: string = '/api/v1/cart';
   readonly couponsRoute: string = '/api/v1/coupons';
+  readonly ordersRoute: string = '/api/v1/orders';
+  readonly profileRoute: string = '/api/v1/profile';
 }
