@@ -18,14 +18,16 @@ export class AuthService {
   constructor(private _apisService: ApisService, private _httpClient: HttpClient, private _router: Router) {
     this.baseurl = _apisService.baseurl;
     this.authRoute = _apisService.authRoute;
-    if (localStorage.getItem('token')) this.saveLogin();
+    (localStorage.getItem('token')) ? this.saveLogin() : Cookies.get('token') !== null ? '' : this.logout();
   }
 
   checkLogin() {
     const token: any = localStorage.getItem('token');
     const decodedToken: any = jwtDecode(token);
-    if (decodedToken.exp <= Math.trunc(Date.now() / 1000)) this.logout();
-    return decodedToken;
+    if (decodedToken.exp <= Math.trunc(Date.now() / 1000)) {
+      this.logout();
+      this._router.navigate(['/home']);
+    } else return decodedToken;
   }
 
   saveLogin() {

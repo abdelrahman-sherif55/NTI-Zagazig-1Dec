@@ -86,7 +86,8 @@
                     </div>
                   }
 
-                  <button type="button" [disabled]="!cart" data-mdb-button-init data-mdb-ripple-init
+                  <button type="button" (click)="checkout()" [disabled]="!cart" data-mdb-button-init
+                          data-mdb-ripple-init
                           class="btn btn-danger btn-block btn-lg" data-mdb-ripple-color="dark">Checkout
                   </button>
 

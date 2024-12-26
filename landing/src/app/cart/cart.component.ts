@@ -4,6 +4,8 @@ import {CartService} from '../services/cart.service';
 import {CurrencyPipe} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CouponsService} from '../services/coupons.service';
+import {OrdersService} from '../services/orders.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -24,7 +26,8 @@ export class CartComponent implements OnInit, OnDestroy {
     coupon: new FormControl(null, [Validators.required])
   })
 
-  constructor(private _authService: AuthService, private _cartService: CartService, private _couponsService: CouponsService) {
+  constructor(private _authService: AuthService, private _cartService: CartService,
+              private _couponsService: CouponsService, private _ordersService: OrdersService, private _router: Router) {
   }
 
   getCart() {
@@ -74,6 +77,26 @@ export class CartComponent implements OnInit, OnDestroy {
       },
       error: err => {
         alert(`${err.error.message}`)
+      }
+    })
+  }
+
+  checkout() {
+    this._ordersService.createCashOrder({
+      address: {
+        city: 'city 1',
+        state: 'state 1',
+        street: 'street 1',
+        zip: '12345678'
+      }
+    }).subscribe({
+      next: res => {
+        alert('order created successfully');
+        this._router.navigate(['/orders']);
+      },
+      error: err => {
+        if (err.status === 400) alert(`${err.error.errors[0].msg}`)
+        else alert(`${err.error.message}`)
       }
     })
   }

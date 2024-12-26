@@ -19,6 +19,13 @@ export class ReviewsService {
     this.productsRoute = _apisService.productsRoute;
   }
 
+  getReviews(page: number, limit: number): Observable<any> {
+    return this._httpClient.get(`${this.baseurl}${this.reviewsRoute}/my?page=${page}&limit=${limit}`, {
+      withCredentials: true,
+      headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+    })
+  }
+
   addReview(productId: string, formData: any): Observable<any> {
     return this._httpClient.post(`${this.baseurl}${this.productsRoute}/${productId}/reviews?lang=en`, formData, {
       withCredentials: true,
