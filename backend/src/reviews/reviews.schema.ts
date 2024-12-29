@@ -38,4 +38,9 @@ reviewsSchema.pre<Reviews>(/^find/, function (next) {
     next();
 });
 
+reviewsSchema.pre<Reviews>('find', function (next) {
+    this.populate({path: 'product', select: 'name cover'});
+    next();
+});
+
 export default mongoose.model<Reviews>('reviews', reviewsSchema);

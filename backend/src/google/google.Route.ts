@@ -9,13 +9,11 @@ googleRoute.get('/callback', passport.authenticate('google', {session: false}), 
     const token = req.user.token;
 
     res.cookie('token', token, {
-        httpOnly: true,
-        secure: true,
         sameSite: 'strict',
         maxAge: 24 * 60 * 60 * 1000
     });
 
-    res.status(200).redirect(`http://localhost:3000`)
+    res.status(200).redirect(`http://localhost:4200/auth/google`)
 });
 
 export default googleRoute;

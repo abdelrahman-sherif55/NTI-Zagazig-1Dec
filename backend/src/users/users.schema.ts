@@ -13,7 +13,7 @@ const usersSchema = new mongoose.Schema<Users>({
     hasPassword: {type: Boolean, default: true},
     wishlist: [{type: mongoose.Schema.Types.ObjectId, ref: 'products'}],
     address: [{
-        address: String,
+        street: String,
         city: String,
         state: String,
         zip: String,

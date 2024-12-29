@@ -70,7 +70,8 @@ class OrdersService {
             user: user?._id,
             address: req.body.obj.payment_key_claims.extra.address,
             isPaid: true,
-            paidAt: Date.now()
+            paidAt: Date.now(),
+            payment: 'card'
         });
         const bulkOptions = cart.items.map((item: any) => ({
             updateOne: {
