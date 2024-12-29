@@ -1,0 +1,66 @@
+<div class="p-3 m-auto">
+  <h2 class="text-center my-5">All Orders</h2>
+  <hr class="my-3">
+  <div class="d-flex justify-content-between">
+    <input class="form-control me-2 w-25" type="search" placeholder="Search" aria-label="Search">
+  </div>
+  <hr class="my-3">
+  <table class="w-100">
+    <thead>
+    <tr class="border-bottom">
+      <th>#</th>
+      <th>ID</th>
+      <th>user</th>
+      <th>Products</th>
+      <th>Payment</th>
+      <th>Delivered</th>
+      <th>Paid</th>
+      <th>items price</th>
+      <th>tax price</th>
+      <th>total price</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="m-5 border-bottom">
+      <td>index</td>
+      <td>id</td>
+      <td>user</td>
+      <td>
+        <img class="mx-3" width="50px" src="iPhone.svg" alt="product name">product name
+        <br><br>
+      </td>
+      <td>payment method</td>
+      <td>is delivered</td>
+      <td>is paid</td>
+      <td>items price</td>
+      <td>tax price</td>
+      <td>total price</td>
+      <td>
+        <button class="btn btn-primary mx-3 btn-sm rounded-3">Deliver Order</button>
+        <button class="btn btn-primary btn-sm rounded-3">Pay Order</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container m-auto mt-5 w-25">
+  <ul class="pagination">
+    <li class="page-item">
+      <button class="page-link">First</button>
+    </li>
+    <li class="page-item">
+      <button class="page-link">Previous</button>
+    </li>
+    <li class="page-item">
+      <button disabled class="page-link">Current</button>
+    </li>
+    <li class="page-item">
+      <button class="page-link">Next</button>
+    </li>
+    <li class="page-item">
+      <button class="page-link">Last</button>
+    </li>
+  </ul>
+</div>
