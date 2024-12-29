@@ -30,7 +30,7 @@ class ProfileService {
         const user: Users | null = await usersSchema.findOneAndUpdate({
             _id: req.user._id,
             hasPassword: false
-        }, {password: await bcrypt.hash(req.body.password, 13)}, {new: true});
+        }, {password: await bcrypt.hash(req.body.password, 13), hasPassword: true}, {new: true});
         if (!user) return next(new ApiErrors(`${req.__('not_found')}`, 404));
         res.status(200).json({data: sanitization.User(user)});
     });

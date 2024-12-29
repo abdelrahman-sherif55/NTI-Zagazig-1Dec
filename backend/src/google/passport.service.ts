@@ -24,6 +24,7 @@ passport.use(
                 } else {
                     checkUser = await usersSchema.create({
                         name: profile._json.name,
+                        username: profile._json.email,
                         email: profile._json.email,
                         image: profile._json.picture,
                         hasPassword: false,

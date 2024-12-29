@@ -9,6 +9,7 @@ class Sanitization {
             active: user?.active,
             hasPassword: user?.hasPassword,
             image: user?.image,
+            googleId: user?.googleId,
         }
     }
 }
