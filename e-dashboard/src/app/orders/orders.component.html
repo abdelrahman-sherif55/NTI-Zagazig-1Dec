@@ -22,25 +22,42 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="m-5 border-bottom">
-      <td>index</td>
-      <td>id</td>
-      <td>user</td>
-      <td>
-        <img class="mx-3" width="50px" src="iPhone.svg" alt="product name">product name
-        <br><br>
-      </td>
-      <td>payment method</td>
-      <td>is delivered</td>
-      <td>is paid</td>
-      <td>items price</td>
-      <td>tax price</td>
-      <td>total price</td>
-      <td>
-        <button class="btn btn-primary mx-3 btn-sm rounded-3">Deliver Order</button>
-        <button class="btn btn-primary btn-sm rounded-3">Pay Order</button>
-      </td>
-    </tr>
+      @for (order of orders; track order._id) {
+        <tr class="m-5 border-bottom">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ order._id.slice(-6) }}</td>
+          <td>{{ order.user.name }}</td>
+          <td>
+            @for (item of order.items; track item._id) {
+              <img class="mx-3" width="50px" [src]="item.product.cover"
+                   [alt]="item.product.name">{{ item.product.name }}
+              <br><br>
+            }
+          </td>
+          <td>{{ order.payment }}</td>
+          <td>@if (order.isDelivered) {
+            {{ order.deliveredAt|date }}
+          } @else {
+            No
+          }</td>
+          <td>@if (order.isPaid) {
+            {{ order.paidAt|date }}
+          } @else {
+            No
+          }</td>
+          <td>{{ order.itemsPrice|currency:'EUR' }}</td>
+          <td>{{ order.taxPrice|currency:'EUR' }}</td>
+          <td>{{ order.totalPrice|currency:'EUR' }}</td>
+          <td>
+            <button [disabled]="order.isDelivered" (click)="deliverOrder(order._id)"
+                    class="btn btn-primary mx-3 btn-sm rounded-3">Deliver Order
+            </button>
+            <button [disabled]="order.isPaid" (click)="payOrder(order._id)" class="btn btn-primary btn-sm rounded-3">Pay
+              Order
+            </button>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

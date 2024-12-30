@@ -3,8 +3,8 @@
   <hr class="my-3">
   <div class="d-flex justify-content-between">
     <a class="btn btn-primary" routerLink="create">Create User</a>
-    <button class="btn btn-success btn-sm rounded-3">View Admins</button>
-    <button class="btn btn-success btn-sm rounded-3">View Users</button>
+    <button (click)="filterUsers('employee')" class="btn btn-success btn-sm rounded-3">View Employees</button>
+    <button (click)="filterUsers('user')" class="btn btn-success btn-sm rounded-3">View Users</button>
     <input class="form-control me-2 w-25" type="search" placeholder="Search" aria-label="Search">
   </div>
   <hr class="my-3">
@@ -23,21 +23,25 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="m-5 border-bottom">
-      <td>index</td>
-      <td>id</td>
-      <td><img class="mx-3" width="50px" src="iPhone.svg" alt="name"></td>
-      <td>username</td>
-      <td>name</td>
-      <td>email</td>
-      <td>role</td>
-      <td>active</td>
-      <td>
-        <a routerLink=":id" class="btn btn-primary btn-sm my-3 rounded-3 mx-3">More Details</a>
-        <button class="btn btn-primary btn-sm my-3 rounded-3 mx-3">change Active</button>
-        <button class="btn btn-danger btn-sm rounded-3">Delete</button>
-      </td>
-    </tr>
+      @for (user of users; track user._id) {
+        <tr class="m-5 border-bottom">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ user._id.slice(-6) }}</td>
+          <td><img class="mx-3" width="50px" [src]="user.image" [alt]="user.name"></td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.active }}</td>
+          <td>
+            <a [routerLink]="[user._id]" class="btn btn-primary btn-sm my-3 rounded-3 mx-3">More Details</a>
+            <button (click)="changeActive(user._id,!user.active)" class="btn btn-primary btn-sm my-3 rounded-3 mx-3">
+              change Active
+            </button>
+            <button (click)="deleteUser(user._id)" class="btn btn-danger btn-sm rounded-3">Delete</button>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

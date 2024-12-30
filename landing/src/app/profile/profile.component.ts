@@ -32,6 +32,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   saveImage(event: any) {
     this.image = event.target.files[0];
+    // this.images = event.target.files;
   }
 
   getProfile() {
@@ -49,6 +50,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const formData = new FormData();
     if (this.name) formData.append('name', this.name);
     if (this.image) formData.append('image', this.image);
+    // if (this.images) {
+    //   for(let i=0;i<images.length;i++){
+    //     formData.append('image', this.images[i])
+    //   }
+    // }
     this._profileService.updateProfile(formData).subscribe({
       next: res => {
         this.profile = res.data;

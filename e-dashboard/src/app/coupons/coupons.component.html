@@ -18,17 +18,19 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="m-5 border-bottom">
-      <td>index</td>
-      <td>id</td>
-      <td>name</td>
-      <td>discount %</td>
-      <td>expire time</td>
-      <td>
-        <a routerLink="update" class="btn btn-primary btn-sm my-3 rounded-3 mx-3">Update</a>
-        <button class="btn btn-danger btn-sm rounded-3">Delete</button>
-      </td>
-    </tr>
+      @for (coupon of coupons; track coupon._id) {
+        <tr class="m-5 border-bottom">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ coupon._id.slice(-6) }}</td>
+          <td>{{ coupon.name }}</td>
+          <td>{{ coupon.discount }} %</td>
+          <td>{{ coupon.expireTime|date }}</td>
+          <td>
+            <a [routerLink]="[coupon._id,'update']" class="btn btn-primary btn-sm my-3 rounded-3 mx-3">Update</a>
+            <button (click)="deleteOne(coupon._id)" class="btn btn-danger btn-sm rounded-3">Delete</button>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>
